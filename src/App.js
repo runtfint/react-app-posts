@@ -1,61 +1,60 @@
 import React from 'react';
 import { useState } from 'react';
+import PostForm from './components/PostForm';
 import PostList from './components/PostList';
-import MyButton from './components/UI/button/MyButton';
-import MyInput from './components/UI/input/MyInput';
+import MySelect from './components/UI/select/MySelect';
 import './styles/App.css'
 
 function App() {
 	const [posts, setPosts] = useState([
-		{id: 1, title: "Javascript", body: "Description"},
-		{id: 2, title: "Javascript 2", body: "Description"},
-		{id: 3, title: "Javascript 3", body: "Description"},
+		{id: 1, title: "AAA", body: "CCC"},
+		{id: 2, title: "BBB", body: "BBB"},
+		{id: 3, title: "CCC ", body: "AAA"},
 	])
 
-	const [title, setTitle] = useState('')
-	const [body, setBody] = useState('')
-
-
-	const addNewPost = (e) => {
-		e.preventDefault()
-		const newPost = {
-			id: Date.now(),
-			title,
-			body,
-		}
+	const [selectedSort, setSelectedSort] = useState('');
+	
+	const createPost = (newPost) => {
 		setPosts([...posts, newPost])
-		setTitle('')
-		setBody('')
+	}
+
+	const removePost = (post) => {
+		setPosts(posts.filter(x => x.id !== post.id))
+	}
+
+	const sortPosts = (sort) => {
+		setSelectedSort(sort)
+		setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
 	}
 	
 	return (
 		<div className="App">
-			<form>
-				<MyInput
-					type="text"
-					placeholder="Title"
-					value = { title }
-					onChange = { e => setTitle(e.target.value) }
-				/>
-
-				<MyInput
-					type="text"
-					placeholder="Desc"
-					value = { body }
-					onChange = { e => setBody(e.target.value) }
-				/>
-
-				<MyButton
-					onClick = { addNewPost }
-				>
-					Create
-				</MyButton>
-			</form>
-
-			<PostList
-				posts={ posts }
-				title = "JS Posts"
+			<PostForm
+				create = { createPost }
 			/>
+			<div>
+				<MySelect
+					options={[
+						{value: 'title', name: "По названию"},
+						{value: 'body', name: "По описанию"},
+					]}
+					defaultValue="Сортировка по:"
+					value={selectedSort}
+					onChange={sortPosts}
+				/>
+			</div>
+			{ posts.length !== 0
+				?
+				<PostList
+					posts={ posts }
+					remove = { removePost }
+					title = "JS Posts"
+				/>
+				:
+				<h3 style={{ textAlign: 'center' }}>
+					Постов нет
+				</h3>
+			}
 		</div>
   	);
 }
