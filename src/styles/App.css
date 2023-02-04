@@ -21,3 +21,43 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.post-enter {
+    transform: translateX(-350px);
+}
+
+.post-enter-active {
+    transform: translateX(0px);
+    transition: all 500ms ease-in;
+}
+
+.post-exit {
+    opacity: 1;
+}
+.post-exit-active {
+    transform: translateX(-350px);
+    transition: all 500ms ease-in;
+}
+
+.page__wrapper {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    column-gap: 30px;
+}
+
+.page {
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    border: 1px solid teal;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.page__current {
+    border: 5px;
+    background-color: aquamarine;
+}
