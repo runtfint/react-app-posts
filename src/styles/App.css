@@ -6,10 +6,12 @@
 
 #root {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .App {
+    margin-top: 50px;
     width: 800px;
 }
 
@@ -60,4 +62,18 @@
 .page__current {
     border: 5px;
     background-color: aquamarine;
+}
+
+.navbar {
+    background-color: aquamarine;
+    height: 100px;
+    width: 100vw;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navbar__links {
+    display: flex;
+    column-gap: 30px;
 }
