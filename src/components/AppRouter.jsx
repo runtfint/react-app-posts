@@ -1,23 +1,51 @@
 import React from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../context';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import About from '../pages/About';
-import Error from '../pages/Error';
-import Posts from '../pages/Posts';
-import PostIdPage from '../pages/PostIdPage';
+import { publicRoutes, privateRoutes } from '../router';
+import MyLoader from './UI/loader/MyLoader';
 
 function AppRouter() {
+
+    const {isAuth, isLoading} = useContext(AuthContext)
+    
+    if (isLoading){
+        return <MyLoader />
+    }
+
     return (
-        <Routes>
-            <Route path='/about' element={ <About/> }></Route>
-            <Route exact path='/posts' element={ <Posts/> }></Route>
-            <Route exact path='/posts/:postId' element={ <PostIdPage/> }></Route>
-            <Route path='/error' element={ <Error/> }></Route>
-            <Route
-                path="*"
-                element={<Navigate to="/posts" replace />}
-            />
-        </Routes>
-    );
+        isAuth
+            ?
+            <Routes>
+                {privateRoutes.map((route) => 
+                    <Route
+                        key={route.path} // можно index, как ниже
+                        path={route.path}
+                        element={ route.component }
+                        exact={route.exact}
+                    />
+                )}
+                <Route
+                    path="*"
+                    element={<Navigate to="/posts" replace />}
+                />
+            </Routes>
+            :
+            <Routes>
+                {publicRoutes.map((route, index) => 
+                    <Route
+                        key={index}
+                        path={route.path}
+                        element={ route.component }
+                        exact={route.exact}
+                    />
+                )}
+                <Route
+                    path="*"
+                    element={<Navigate to="/login" replace />}
+                />
+            </Routes>            
+    )
 }
 
 export default AppRouter;
